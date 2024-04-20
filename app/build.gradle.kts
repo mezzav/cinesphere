@@ -54,7 +54,9 @@ android {
 
 dependencies {
 
-    var hilt_version = "2.44"
+    val hilt_version = "2.44"
+    val nav_version = "2.7.7"
+    val compose_nav_version = "1.6.6"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -64,6 +66,14 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //compose-navigation
+    implementation("androidx.compose.material:material:${compose_nav_version}")
+
+    //navigation
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.runtime.ktx)
+
 
     //dagger-hilt
     implementation("com.google.dagger:hilt-android:${hilt_version}")
