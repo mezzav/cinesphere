@@ -12,6 +12,6 @@ object MovieOverviewDestination: NavigationDestination {
 }
 
 @Composable
-fun MovieOverviewScreen() {
+fun MovieOverviewScreen( viewModel: MovieOverviewViewModel) {
     Text("Hello from Movie Overview")
 }

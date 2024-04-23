@@ -1,6 +1,9 @@
+import java.util.Properties
+
 plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -21,6 +24,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField("String", "TMDB_API_TOKEN", "\"${properties.getProperty("TMDB_API_TOKEN")}\"")
     }
 
     buildTypes {
@@ -41,9 +49,10 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.9"
     }
     packaging {
         resources {
@@ -54,7 +63,7 @@ android {
 
 dependencies {
 
-    val hilt_version = "2.44"
+    val hilt_version = "2.51.1"
     val nav_version = "2.7.7"
     val compose_nav_version = "1.6.6"
 
@@ -74,10 +83,20 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation(libs.androidx.navigation.runtime.ktx)
 
+    //retrofit
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     //dagger-hilt
     implementation("com.google.dagger:hilt-android:${hilt_version}")
     kapt("com.google.dagger:hilt-android-compiler:${hilt_version}")
+
+    //viewmodel
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    //serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     testImplementation(libs.junit)
 
