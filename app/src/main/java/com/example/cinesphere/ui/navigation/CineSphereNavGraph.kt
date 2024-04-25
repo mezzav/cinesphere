@@ -26,7 +26,8 @@ fun CineSphereNavigationGraph(
     ) {
         composable(route = MovieOverviewDestination.route) {
             val viewModel = hiltViewModel<MovieOverviewViewModel>()
-            MovieOverviewScreen(viewModel)
+            val uiState = viewModel.uiState
+            MovieOverviewScreen(uiState)
         }
 
         composable(route = TVOverviewDestination.route) {

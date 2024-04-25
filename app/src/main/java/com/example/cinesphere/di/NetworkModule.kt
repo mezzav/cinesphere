@@ -25,6 +25,12 @@ object NetworkModule {
     }
 
     @Provides
+    @Named("TMDB_IMAGE_BASE_URL")
+    fun provideImageBaseUrl(): String {
+        return "https://image.tmdb.org/t/p/"
+    }
+
+    @Provides
     @Named("TMDB_API_TOKEN")
     fun provideTMDBApiToken() : String {
         return BuildConfig.TMDB_API_TOKEN
