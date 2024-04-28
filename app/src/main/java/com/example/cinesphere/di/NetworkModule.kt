@@ -1,7 +1,7 @@
 package com.example.cinesphere.di
 
 import com.example.cinesphere.BuildConfig
-import com.example.cinesphere.data.service.TMDBService
+import com.example.cinesphere.data.remote.service.TMDBService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides

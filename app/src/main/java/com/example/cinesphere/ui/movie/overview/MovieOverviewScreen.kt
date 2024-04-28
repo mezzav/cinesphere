@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.cinesphere.R
-import com.example.cinesphere.data.models.Movie
+import com.example.cinesphere.data.model.Movie
 import com.example.cinesphere.ui.navigation.NavigationDestination
 
 object MovieOverviewDestination: NavigationDestination {
@@ -33,7 +33,7 @@ object MovieOverviewDestination: NavigationDestination {
 fun MovieOverviewScreen(uiState: MovieOverviewUIState) {
     when (uiState) {
         is MovieOverviewUIState.Success -> {
-            MovieList(movies = uiState.data.results)
+            MovieList(movies = uiState.data)
         }
         else -> {
             
@@ -56,7 +56,7 @@ fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
     Box{
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(movie.poster)
+                .data(movie.posterUrl)
                 .crossfade(true)
                 .build(),
             contentDescription = "",

@@ -1,10 +1,11 @@
-package com.example.cinesphere.data.models
+package com.example.cinesphere.data.remote.models
 
+import com.example.cinesphere.data.model.Movie
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieList(
+data class NetworkMovieList(
     val dates: DateRange,
     val page: Int,
 
@@ -13,11 +14,11 @@ data class MovieList(
 
     @SerialName("total_results")
     val totalResults: Int,
-    
-    val results: List<Movie>
+
+    val results: List<NetworkMovie>
 )
 @Serializable
-data class Movie(
+data class NetworkMovie(
     val adult: Boolean,
 
     @SerialName("backdrop_path")
@@ -55,3 +56,12 @@ data class DateRange(
     val minimum: String
 )
 
+
+fun NetworkMovie.asExternalModel() = Movie(
+    id = id,
+    adult = adult,
+    backdropUrl = backdrop,
+    posterUrl =  poster,
+    overview = overview,
+    title = title
+)
