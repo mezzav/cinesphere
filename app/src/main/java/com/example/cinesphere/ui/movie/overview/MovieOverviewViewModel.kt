@@ -10,6 +10,7 @@ import com.example.cinesphere.data.remote.models.asExternalModel
 import com.example.cinesphere.data.repository.NetworkTMDBRepository
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -17,7 +18,11 @@ import javax.inject.Inject
 
 
 sealed interface MovieOverviewUIState {
-    data class Success(val data: List<Movie>) : MovieOverviewUIState
+    data class Success(
+        val upcomingMovies: List<Movie>,
+        val popularMovies: List<Movie>,
+        val nowPlayingMovies: List<Movie>
+    ) : MovieOverviewUIState
     data class Error(val message: String?) : MovieOverviewUIState
     data object Loading : MovieOverviewUIState
 }
@@ -33,26 +38,56 @@ class MovieOverviewViewModel @Inject constructor(
         private set
 
     init {
-        viewModelScope.launch {
-            uiState = MovieOverviewUIState.Loading
+        uiState = MovieOverviewUIState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
             uiState = try {
-                val result = repository.upcomingMovies()
+                val upcomingMovies = fetchUpcomingMovies().shuffled()
+                val popularMovies = fetchPopularMovies().shuffled()
+                val nowPlayingMovies = fetchNowPlayingMovies().shuffled()
 
-                val movies = result.results.map { movie ->
-                    movie.copy(
-                        backdrop = formatTMDBUrlUseCase(352, movie.backdrop),
-                        poster = formatTMDBUrlUseCase(342, movie.poster)
-                    )
-                }.map { movie ->
-                    movie.asExternalModel()
-                }
-
-                MovieOverviewUIState.Success(movies)
+                MovieOverviewUIState.Success(
+                    upcomingMovies = upcomingMovies,
+                    popularMovies = popularMovies,
+                    nowPlayingMovies = nowPlayingMovies
+                )
             } catch (e: IOException) {
                 MovieOverviewUIState.Error(e.message)
             } catch (e: HttpException) {
                 MovieOverviewUIState.Error(e.message)
             }
+        }
+    }
+
+    private suspend fun fetchUpcomingMovies(): List<Movie>  {
+        val movies = repository.upcomingMovies()
+
+        return movies.results.map { movie ->
+            movie.copy(
+                backdrop = formatTMDBUrlUseCase(1280, movie.backdrop),
+                poster = formatTMDBUrlUseCase(342, movie.poster)
+            ).asExternalModel()
+        }
+    }
+
+    private suspend fun fetchPopularMovies(): List<Movie>  {
+        val movies = repository.popularMovies()
+
+        return movies.results.map { movie ->
+            movie.copy(
+                backdrop = formatTMDBUrlUseCase(1280, movie.backdrop),
+                poster = formatTMDBUrlUseCase(342, movie.poster)
+            ).asExternalModel()
+        }
+    }
+
+    private suspend fun fetchNowPlayingMovies(): List<Movie>  {
+        val movies = repository.nowPlayingMovies()
+
+        return movies.results.map { movie ->
+            movie.copy(
+                backdrop = formatTMDBUrlUseCase(1280, movie.backdrop),
+                poster = formatTMDBUrlUseCase(342, movie.poster)
+            ).asExternalModel()
         }
     }
 }

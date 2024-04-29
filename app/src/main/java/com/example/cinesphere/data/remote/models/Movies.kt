@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkMovieList(
-    val dates: DateRange,
+    val dates: DateRange? = null,
     val page: Int,
 
     @SerialName("total_pages")
