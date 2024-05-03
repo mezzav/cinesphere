@@ -22,7 +22,7 @@ data class NetworkMovie(
     val adult: Boolean,
 
     @SerialName("backdrop_path")
-    val backdrop: String,
+    val backdrop: String?,
 
     @SerialName("genre_ids")
     val genreIDs: List<Int>,
@@ -37,7 +37,7 @@ data class NetworkMovie(
     val popularity: Float,
 
     @SerialName("poster_path")
-    val poster: String,
+    val poster: String?,
 
     @SerialName("release_date")
     val releaseDate: String,

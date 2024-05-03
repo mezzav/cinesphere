@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.cinesphere.ui.movie.overview.MovieOverviewDestination
 import com.example.cinesphere.ui.movie.overview.MovieOverviewScreen
 import com.example.cinesphere.ui.movie.overview.MovieOverviewViewModel
@@ -26,8 +27,16 @@ fun CineSphereNavigationGraph(
     ) {
         composable(route = MovieOverviewDestination.route) {
             val viewModel = hiltViewModel<MovieOverviewViewModel>()
-            val uiState = viewModel.uiState
-            MovieOverviewScreen(uiState)
+
+            val upcomingMoviesPagingList = viewModel.upcomingMovies.collectAsLazyPagingItems()
+            val popularMoviesPagingList = viewModel.popularMovies.collectAsLazyPagingItems()
+            val nowPlayingMoviesPagingList = viewModel.nowPlayingMovies.collectAsLazyPagingItems()
+
+            MovieOverviewScreen(
+                upcomingMoviesPagingList,
+                popularMoviesPagingList,
+                nowPlayingMoviesPagingList
+            )
         }
 
         composable(route = TVOverviewDestination.route) {

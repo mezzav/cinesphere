@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -23,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.cinesphere.R
@@ -36,27 +36,24 @@ object MovieOverviewDestination: NavigationDestination {
 }
 
 @Composable
-fun MovieOverviewScreen(uiState: MovieOverviewUIState) {
-    when (uiState) {
-        is MovieOverviewUIState.Success -> {
-            Column(
-                modifier = Modifier.padding(start = 8.dp, top = 16.dp)
-            ) {
-                MovieTypeContainer(header = "Popular", movies = uiState.popularMovies)
+fun MovieOverviewScreen(
+    upcomingMoviesPagingList: LazyPagingItems<Movie>,
+    popularMoviesPagingList: LazyPagingItems<Movie>,
+    nowPlayingMoviesPagingList: LazyPagingItems<Movie>
+) {
+    Column(
+        modifier = Modifier.padding(start = 8.dp, top = 16.dp, end = 8.dp)
+    ) {
+        MovieTypeContainer(header = "Popular", movies = popularMoviesPagingList)
 
-                MovieTypeContainer(header = "Upcoming", movies = uiState.upcomingMovies)
+        MovieTypeContainer(header = "Upcoming", movies = upcomingMoviesPagingList)
 
-                MovieTypeContainer(header = "Now Playing",  movies = uiState.nowPlayingMovies)
-            }
-        }
-        else -> {
-            
-        }
+        MovieTypeContainer(header = "Now Playing",  movies = nowPlayingMoviesPagingList)
     }
 }
 
 @Composable
-fun MovieTypeContainer(header: String, movies: List<Movie>) {
+fun MovieTypeContainer(header: String, movies: LazyPagingItems<Movie>) {
     Text(header, fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
     Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -68,12 +65,17 @@ fun MovieTypeContainer(header: String, movies: List<Movie>) {
 }
 
 @Composable
-fun MovieList(movies: List<Movie>) {
+fun MovieList(movies: LazyPagingItems<Movie>) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(items = movies) {movie ->
-            MovieCard(movie = movie)
+        items(count = movies.itemCount) { index ->
+            val item = movies[index]
+
+            if (item != null) {
+                MovieCard(movie = item)
+            }
+
         }
     }
 }

@@ -1,93 +1,89 @@
 package com.example.cinesphere.ui.movie.overview
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
+import androidx.paging.map
 import com.example.cinesphere.data.model.Movie
-import com.example.cinesphere.data.remote.models.asExternalModel
-import com.example.cinesphere.data.repository.NetworkTMDBRepository
+import com.example.cinesphere.data.repository.paging.NowPlayingMoviesPagingSource
+import com.example.cinesphere.data.repository.paging.PopularMoviesPagingSource
+import com.example.cinesphere.data.repository.paging.UpcomingMoviesPagingSource
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-
-
-sealed interface MovieOverviewUIState {
-    data class Success(
-        val upcomingMovies: List<Movie>,
-        val popularMovies: List<Movie>,
-        val nowPlayingMovies: List<Movie>
-    ) : MovieOverviewUIState
-    data class Error(val message: String?) : MovieOverviewUIState
-    data object Loading : MovieOverviewUIState
-}
-
-
 @HiltViewModel
 class MovieOverviewViewModel @Inject constructor(
-    private val repository: NetworkTMDBRepository,
+    private val upcomingMoviesPagingSource: UpcomingMoviesPagingSource,
+    private val popularMoviesPagingSource: PopularMoviesPagingSource,
+    private val nowPlayingMoviesPagingSource: NowPlayingMoviesPagingSource,
     private val formatTMDBUrlUseCase: FormatTMDBUrlUseCase
 ) : ViewModel() {
-
-    var uiState: MovieOverviewUIState by mutableStateOf(MovieOverviewUIState.Loading)
-        private set
-
-    init {
-        uiState = MovieOverviewUIState.Loading
-        viewModelScope.launch(Dispatchers.IO) {
-            uiState = try {
-                val upcomingMovies = fetchUpcomingMovies().shuffled()
-                val popularMovies = fetchPopularMovies().shuffled()
-                val nowPlayingMovies = fetchNowPlayingMovies().shuffled()
-
-                MovieOverviewUIState.Success(
-                    upcomingMovies = upcomingMovies,
-                    popularMovies = popularMovies,
-                    nowPlayingMovies = nowPlayingMovies
+        val upcomingMovies: Flow<PagingData<Movie>> = Pager(
+            config = PagingConfig(
+                pageSize = 1,
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = { upcomingMoviesPagingSource }
+        ).flow.map{ pagingData ->
+            pagingData.filter { networkMovie ->
+                !networkMovie.poster.isNullOrBlank()
+            }.map { networkMovie ->
+                Movie(
+                    id = networkMovie.id,
+                    adult = networkMovie.adult,
+                    backdropUrl = networkMovie.backdrop?.let { formatTMDBUrlUseCase(1280, it) },
+                    posterUrl = networkMovie.poster?.let { formatTMDBUrlUseCase(342, it) },
+                    overview = networkMovie.overview,
+                    title = networkMovie.title
                 )
-            } catch (e: IOException) {
-                MovieOverviewUIState.Error(e.message)
-            } catch (e: HttpException) {
-                MovieOverviewUIState.Error(e.message)
             }
+        }.cachedIn(viewModelScope)
+
+        val popularMovies: Flow<PagingData<Movie>> = Pager(
+            config = PagingConfig(
+                pageSize = 1,
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = { popularMoviesPagingSource }
+        ).flow.map{ pagingData ->
+            pagingData.filter{ networkMovie ->
+                !networkMovie.poster.isNullOrBlank()
+            }.map { networkMovie ->
+                Movie(
+                    id = networkMovie.id,
+                    adult = networkMovie.adult,
+                    backdropUrl = networkMovie.backdrop?.let { formatTMDBUrlUseCase(1280, it) },
+                    posterUrl = networkMovie.poster?.let { formatTMDBUrlUseCase(342, it) },
+                    overview = networkMovie.overview,
+                    title = networkMovie.title
+                )
+            }
+        }.cachedIn(viewModelScope)
+
+    val nowPlayingMovies: Flow<PagingData<Movie>> = Pager(
+        config = PagingConfig(
+            pageSize = 1,
+            enablePlaceholders = false,
+        ),
+        pagingSourceFactory = { nowPlayingMoviesPagingSource }
+    ).flow.map{ pagingData ->
+        pagingData.filter{ networkMovie ->
+            !networkMovie.poster.isNullOrBlank()
+        }.map { networkMovie ->
+            Movie(
+                id = networkMovie.id,
+                adult = networkMovie.adult,
+                backdropUrl = networkMovie.backdrop?.let { formatTMDBUrlUseCase(1280, it) },
+                posterUrl = networkMovie.poster?.let { formatTMDBUrlUseCase(342, it) },
+                overview = networkMovie.overview,
+                title = networkMovie.title
+            )
         }
-    }
-
-    private suspend fun fetchUpcomingMovies(): List<Movie>  {
-        val movies = repository.upcomingMovies()
-
-        return movies.results.map { movie ->
-            movie.copy(
-                backdrop = formatTMDBUrlUseCase(1280, movie.backdrop),
-                poster = formatTMDBUrlUseCase(342, movie.poster)
-            ).asExternalModel()
-        }
-    }
-
-    private suspend fun fetchPopularMovies(): List<Movie>  {
-        val movies = repository.popularMovies()
-
-        return movies.results.map { movie ->
-            movie.copy(
-                backdrop = formatTMDBUrlUseCase(1280, movie.backdrop),
-                poster = formatTMDBUrlUseCase(342, movie.poster)
-            ).asExternalModel()
-        }
-    }
-
-    private suspend fun fetchNowPlayingMovies(): List<Movie>  {
-        val movies = repository.nowPlayingMovies()
-
-        return movies.results.map { movie ->
-            movie.copy(
-                backdrop = formatTMDBUrlUseCase(1280, movie.backdrop),
-                poster = formatTMDBUrlUseCase(342, movie.poster)
-            ).asExternalModel()
-        }
-    }
+    }.cachedIn(viewModelScope)
 }
