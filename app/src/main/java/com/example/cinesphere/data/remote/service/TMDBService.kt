@@ -1,7 +1,9 @@
 package com.example.cinesphere.data.remote.service
 
+import com.example.cinesphere.data.remote.models.NetworkMovieDetails
 import com.example.cinesphere.data.remote.models.NetworkMovieList
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TMDBService {
@@ -19,4 +21,9 @@ interface TMDBService {
     suspend fun nowPlayingMovies(
         @Query("page") page: Int
     ): NetworkMovieList
+
+    @GET("movie/{id}")
+    suspend fun movieDetails(
+        @Path("id") id: Int
+    ): NetworkMovieDetails
 }

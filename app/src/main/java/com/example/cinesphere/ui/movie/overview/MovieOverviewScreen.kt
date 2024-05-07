@@ -1,5 +1,6 @@
 package com.example.cinesphere.ui.movie.overview
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,33 +40,53 @@ object MovieOverviewDestination: NavigationDestination {
 fun MovieOverviewScreen(
     upcomingMoviesPagingList: LazyPagingItems<Movie>,
     popularMoviesPagingList: LazyPagingItems<Movie>,
-    nowPlayingMoviesPagingList: LazyPagingItems<Movie>
+    nowPlayingMoviesPagingList: LazyPagingItems<Movie>,
+    navigateToDetails: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(start = 8.dp, top = 16.dp, end = 8.dp)
     ) {
-        MovieTypeContainer(header = "Popular", movies = popularMoviesPagingList)
+        MovieTypeContainer(
+            header = "Popular",
+            movies = popularMoviesPagingList,
+            navigateToDetails
+        )
 
-        MovieTypeContainer(header = "Upcoming", movies = upcomingMoviesPagingList)
+        MovieTypeContainer(
+            header = "Upcoming",
+            movies = upcomingMoviesPagingList,
+            navigateToDetails
+        )
 
-        MovieTypeContainer(header = "Now Playing",  movies = nowPlayingMoviesPagingList)
+        MovieTypeContainer(
+            header = "Now Playing",
+            movies = nowPlayingMoviesPagingList,
+            navigateToDetails
+        )
     }
 }
 
 @Composable
-fun MovieTypeContainer(header: String, movies: LazyPagingItems<Movie>) {
+fun MovieTypeContainer(
+    header: String,
+    movies: LazyPagingItems<Movie>,
+    navigateToDetails: (Int) -> Unit
+) {
     Text(header, fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
     Spacer(modifier = Modifier.padding(top = 8.dp))
     
-    MovieList(movies = movies)
+    MovieList(movies = movies, navigateToDetails)
 
     Spacer(modifier = Modifier.padding(top = 8.dp))
 
 }
 
 @Composable
-fun MovieList(movies: LazyPagingItems<Movie>) {
+fun MovieList(
+    movies: LazyPagingItems<Movie>,
+    navigateToDetails: (Int) -> Unit
+) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -73,7 +94,7 @@ fun MovieList(movies: LazyPagingItems<Movie>) {
             val item = movies[index]
 
             if (item != null) {
-                MovieCard(movie = item)
+                MovieCard(movie = item, navigateToDetails)
             }
 
         }
@@ -81,7 +102,11 @@ fun MovieList(movies: LazyPagingItems<Movie>) {
 }
 
 @Composable
-fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
+fun MovieCard(
+    movie: Movie,
+    navigateToDetails: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box{
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -90,7 +115,9 @@ fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
                 .build(),
             contentDescription = "",
             contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(RoundedCornerShape(8.dp))
+            modifier = Modifier.clickable {
+                navigateToDetails(movie.id)
+            }.clip(RoundedCornerShape(8.dp))
         )
 
         IconButton(

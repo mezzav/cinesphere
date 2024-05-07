@@ -1,0 +1,137 @@
+package com.example.cinesphere.data.remote.models
+
+import com.example.cinesphere.data.model.Genre
+import com.example.cinesphere.data.model.MovieDetails
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class NetworkMovieDetails(
+    val adult: Boolean,
+
+    @SerialName("backdrop_path")
+    val backdropPath: String?,
+
+    @SerialName("belongs_to_collection")
+    val belongsToCollection: NetworkCollection?,
+
+    val budget: Int,
+    val genres: List<NetworkGenres>,
+    val homepage: String?,
+    val id: Int,
+
+    @SerialName("imdb_id")
+    val imdbID: String,
+
+    @SerialName("origin_country")
+    val originCountry: List<String>,
+
+    @SerialName("original_language")
+    val originalLanguage: String,
+
+    @SerialName("original_title")
+    val originalTitle: String,
+
+
+    val overview: String,
+    val popularity: Float,
+
+    @SerialName("poster_path")
+    val posterPath: String?,
+
+    @SerialName("production_companies")
+    val productionCompanies: List<NetworkProductionCompanies>,
+
+    @SerialName("production_countries")
+    val productionCountries: List<NetworkProductionCountries>,
+
+    @SerialName("release_date")
+    val releaseDate: String,
+    val revenue: Int,
+    val runtime: Int,
+
+    @SerialName("spoken_languages")
+    val spokenLanguages: List<NetworkSpokenLanguages>,
+
+    val status: String,
+    val tagline: String?,
+    val title: String,
+    val video: Boolean,
+
+    @SerialName("vote_average")
+    val voteAverage: Float,
+
+    @SerialName("vote_count")
+    val voteCount: Int
+)
+
+@Serializable
+data class NetworkSpokenLanguages(
+    @SerialName("english_name")
+    val englishName: String,
+
+    @SerialName("iso_639_1")
+    val shorthand: String,
+    val name: String
+)
+
+@Serializable
+data class NetworkProductionCompanies(
+    val id: Int,
+
+    @SerialName("logo_path")
+    val logoPath: String?,
+
+    val name: String,
+
+    @SerialName("origin_country")
+    val originCountry: String
+)
+
+@Serializable
+data class NetworkProductionCountries(
+    @SerialName("iso_3166_1")
+    val shorthand: String,
+    val name: String
+)
+
+@Serializable
+data class NetworkCollection(
+    val id: Int,
+    val name: String?,
+
+    @SerialName("poster_path")
+    val poster: String?,
+
+    @SerialName("backdrop_path")
+    val backdrop: String?
+)
+
+@Serializable
+data class NetworkGenres(
+    val id: Int,
+    val name: String
+)
+
+fun NetworkGenres.asExternalModel() = Genre(
+    id = id,
+    name = name
+)
+
+fun NetworkMovieDetails.asExternalModel() = MovieDetails(
+    backdropUrl = if (backdropPath.isNullOrBlank()) "" else backdropPath,
+    posterUrl = if (posterPath.isNullOrBlank()) "" else posterPath,
+    budget = budget,
+    genres = genres.map { networkGenre ->
+        networkGenre.asExternalModel()
+    },
+    homepage = if (homepage.isNullOrBlank()) "" else homepage,
+    imdbID = imdbID,
+    overview = overview,
+    releaseDate = releaseDate,
+    revenue = revenue,
+    runtime = runtime,
+    status = status,
+    tagline = if (tagline.isNullOrBlank()) "" else tagline,
+    title = title
+)
