@@ -1,6 +1,5 @@
 package com.example.cinesphere.data.remote.models
 
-import com.example.cinesphere.data.model.Movie
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -54,14 +53,4 @@ data class NetworkMovie(
 data class DateRange(
     val maximum: String,
     val minimum: String
-)
-
-
-fun NetworkMovie.asExternalModel() = Movie(
-    id = id,
-    adult = adult,
-    backdropUrl = backdrop,
-    posterUrl =  poster,
-    overview = overview,
-    title = title
 )

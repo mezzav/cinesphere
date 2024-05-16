@@ -56,24 +56,32 @@ object MovieDetailsDestination: NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreen(uiState: MovieDetailsUiState) {
-    val movie = uiState.movie
-    val genres: List<Genre> = if (movie.genres.isEmpty()) emptyList() else movie.genres.slice(0..1)
 
-    Column {
-        MovieDetailsHeader(
-            backdropUrl = movie.backdropUrl,
-            title = movie.title,
-            tagline = movie.tagline,
-            genres = genres
-        )
+    when(uiState) {
+        is MovieDetailsUiState.Success -> {
+            val movie = uiState.movie
+
+            Column {
+                MovieDetailsHeader(
+                    backdropUrl = movie.backdropUrl,
+                    title = movie.title,
+                    tagline = movie.tagline,
+                    genres = movie.genres.slice(0..1)
+                )
+
+            }
+        }
+        else -> {
+            Text("Error")
+        }
     }
 }
 
 @Composable
 fun MovieDetailsHeader(
-    backdropUrl: String,
+    backdropUrl: String?,
     title: String,
-    tagline: String,
+    tagline: String?,
     genres: List<Genre>,
     modifier: Modifier = Modifier
 ) {
@@ -152,12 +160,14 @@ fun MovieDetailsHeader(
 
                             Spacer(Modifier.width(140.dp))
 
-                            Text(
-                                text = tagline,
-                                overflow = TextOverflow.Ellipsis,
-                                maxLines = 2,
-                                modifier = Modifier.align(Alignment.CenterVertically)
-                            )
+                            if (tagline != null) {
+                                Text(
+                                    text = tagline,
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 2,
+                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                )
+                            }
                         }
                     }
                 }

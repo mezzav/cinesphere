@@ -1,7 +1,9 @@
 package com.example.cinesphere.data.remote.service
 
+import com.example.cinesphere.data.remote.models.NetworkMovieCredits
 import com.example.cinesphere.data.remote.models.NetworkMovieDetails
 import com.example.cinesphere.data.remote.models.NetworkMovieList
+import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -25,5 +27,10 @@ interface TMDBService {
     @GET("movie/{id}")
     suspend fun movieDetails(
         @Path("id") id: Int
-    ): NetworkMovieDetails
+    ): ApiResponse<NetworkMovieDetails>
+
+    @GET("movie/{id}/credits")
+    suspend fun movieCredits(
+        @Path("id") id: Int
+    ): ApiResponse<NetworkMovieCredits>
 }

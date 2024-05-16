@@ -6,6 +6,7 @@ import com.example.cinesphere.data.repository.paging.NowPlayingMoviesPagingSourc
 import com.example.cinesphere.data.repository.paging.PopularMoviesPagingSource
 import com.example.cinesphere.data.repository.paging.UpcomingMoviesPagingSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -63,6 +64,7 @@ object NetworkModule {
     ) : Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .client(okHttpClient)
             .baseUrl(baseUrl)
             .build()

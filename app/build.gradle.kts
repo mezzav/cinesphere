@@ -41,11 +41,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -67,6 +67,7 @@ dependencies {
     val nav_version = "2.7.7"
     val compose_nav_version = "1.6.6"
     val paging_version = "3.2.1"
+    val sandwich_version = "2.0.7"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -103,6 +104,10 @@ dependencies {
     implementation("androidx.paging:paging-runtime:${paging_version}")
     // optional - Jetpack Compose integration
     implementation("androidx.paging:paging-compose:3.3.0-beta01")
+
+    //sandwich
+    implementation("com.github.skydoves:sandwich:${sandwich_version}")
+    implementation("com.github.skydoves:sandwich-retrofit:${sandwich_version}")
 
     testImplementation(libs.junit)
 

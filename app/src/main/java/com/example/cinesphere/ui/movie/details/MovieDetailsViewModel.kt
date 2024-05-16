@@ -6,51 +6,51 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.cinesphere.data.model.Cast
+import com.example.cinesphere.data.model.Crew
 import com.example.cinesphere.data.model.MovieDetails
-import com.example.cinesphere.data.remote.models.NetworkMovieDetails
-import com.example.cinesphere.data.remote.models.asExternalModel
-import com.example.cinesphere.data.repository.NetworkTMDBRepository
-import com.example.cinesphere.domain.FormatTMDBUrlUseCase
+import com.example.cinesphere.domain.GetMovieDetailsWithCreditsUseCase
+import com.skydoves.sandwich.ApiResponse
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-interface MovieDetailsUiState {
-    val movie: MovieDetails
+
+sealed interface MovieDetailsUiState {
+    data class Success(
+        val movie: MovieDetails,
+        val cast: List<Cast>,
+        val crew: List<Crew>
+    ) : MovieDetailsUiState
+    data object Error : MovieDetailsUiState
+    data object Loading : MovieDetailsUiState
 }
-
-private class MutableMovieDetailsUiState: MovieDetailsUiState {
-    override var movie: MovieDetails by mutableStateOf(MovieDetails())
-}
-
 
 class MovieDetailsViewModel @AssistedInject constructor(
-    private val repository: NetworkTMDBRepository,
-    private val formatTMDBUrlUseCase: FormatTMDBUrlUseCase,
+    private val getMovieDetailsWithCreditsUseCase: GetMovieDetailsWithCreditsUseCase,
     @Assisted
     private val id: Int
 ) : ViewModel() {
 
-    private val _uiState = MutableMovieDetailsUiState()
-    val uiState: MovieDetailsUiState= _uiState
-
+    var uiState: MovieDetailsUiState by mutableStateOf(MovieDetailsUiState.Loading)
+        private set
     init {
         viewModelScope.launch() {
-            var response: NetworkMovieDetails
+            val movieDetailsWithCredits = getMovieDetailsWithCreditsUseCase(id)
 
-            withContext(Dispatchers.IO) {
-                response = repository.fetchMovieDetails(id)
-
-                response = response.copy(
-                    backdropPath = response.backdropPath?.let { formatTMDBUrlUseCase(1280, it) },
-                    posterPath = response.posterPath?.let { formatTMDBUrlUseCase(342, it) }
-                )
+            uiState = when(movieDetailsWithCredits) {
+                is ApiResponse.Success -> {
+                    MovieDetailsUiState.Success(
+                        movie = movieDetailsWithCredits.data.movie,
+                        cast = movieDetailsWithCredits.data.cast,
+                        crew = movieDetailsWithCredits.data.crew
+                    )
+                }
+                else -> {
+                    MovieDetailsUiState.Error
+                }
             }
-
-            _uiState.movie = response.asExternalModel()
         }
     }
     @AssistedFactory

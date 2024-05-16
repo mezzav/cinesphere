@@ -1,7 +1,6 @@
 package com.example.cinesphere.data.remote.models
 
 import com.example.cinesphere.data.model.Genre
-import com.example.cinesphere.data.model.MovieDetails
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -116,22 +115,4 @@ data class NetworkGenres(
 fun NetworkGenres.asExternalModel() = Genre(
     id = id,
     name = name
-)
-
-fun NetworkMovieDetails.asExternalModel() = MovieDetails(
-    backdropUrl = if (backdropPath.isNullOrBlank()) "" else backdropPath,
-    posterUrl = if (posterPath.isNullOrBlank()) "" else posterPath,
-    budget = budget,
-    genres = genres.map { networkGenre ->
-        networkGenre.asExternalModel()
-    },
-    homepage = if (homepage.isNullOrBlank()) "" else homepage,
-    imdbID = imdbID,
-    overview = overview,
-    releaseDate = releaseDate,
-    revenue = revenue,
-    runtime = runtime,
-    status = status,
-    tagline = if (tagline.isNullOrBlank()) "" else tagline,
-    title = title
 )
