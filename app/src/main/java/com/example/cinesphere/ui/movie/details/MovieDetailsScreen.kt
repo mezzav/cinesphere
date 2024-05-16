@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
 import androidx.compose.material.ProvideTextStyle
+import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,6 +28,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -38,7 +43,10 @@ import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.cinesphere.R
+import com.example.cinesphere.data.model.Cast
+import com.example.cinesphere.data.model.Crew
 import com.example.cinesphere.data.model.Genre
+import com.example.cinesphere.data.model.MovieDetails
 import com.example.cinesphere.ui.navigation.NavigationDestination
 import kotlin.text.Typography.bullet
 
@@ -53,27 +61,58 @@ object MovieDetailsDestination: NavigationDestination {
     )
 }
 
+val tabs: List<String> = listOf("Details", "Cast", "Trailers")
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreen(uiState: MovieDetailsUiState) {
-
     when(uiState) {
         is MovieDetailsUiState.Success -> {
-            val movie = uiState.movie
-
-            Column {
-                MovieDetailsHeader(
-                    backdropUrl = movie.backdropUrl,
-                    title = movie.title,
-                    tagline = movie.tagline,
-                    genres = movie.genres.slice(0..1)
-                )
-
-            }
+            MovieDetailsScreen(movie = uiState.movie, cast = uiState.cast , crew = uiState.crew )
         }
         else -> {
             Text("Error")
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MovieDetailsScreen(movie: MovieDetails, cast: List<Cast>, crew: List<Crew>) {
+    var state by remember { mutableIntStateOf(0) }
+
+    Column {
+        MovieDetailsHeader(
+            backdropUrl = movie.backdropUrl,
+            title = movie.title,
+            tagline = movie.tagline,
+            genres = movie.genres.slice(0..1)
+        )
+
+        PrimaryTabRow(selectedTabIndex = state) {
+            tabs.forEachIndexed { index, tab ->
+                Tab(
+                    selected = state == index,
+                    onClick = { state = index },
+                    text = { Text(tab) }
+                )
+            }
+        }
+
+        when(state) {
+            0 -> {
+                OverviewContent(
+                    releaseDate = movie.releaseDate,
+                    runtime = movie.runtime,
+                    languages = movie.spokenLanguages.joinToString(separator = ","),
+                    overview = movie.overview,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp)
+                )
+            }
+        }
+
     }
 }
 
@@ -173,5 +212,57 @@ fun MovieDetailsHeader(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun OverviewContent(
+    overview: String,
+    releaseDate: String,
+    runtime: String,
+    languages: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(
+            modifier = Modifier.width(160.dp)
+        ) {
+            IconText(R.drawable.calendar, releaseDate)
+            IconText(R.drawable.time, runtime)
+            IconText(R.drawable.language, languages)
+        }
+    }
+
+    Spacer(modifier = Modifier.height(50.dp))
+    
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = "Overview",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(overview)
+    }
+}
+
+@Composable
+fun IconText(iconID: Int, text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Icon(painter = painterResource(id = iconID), contentDescription = null)
+
+        Spacer(Modifier.width(4.dp))
+
+        Text(text, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
 }

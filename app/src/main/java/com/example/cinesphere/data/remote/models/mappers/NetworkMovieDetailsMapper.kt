@@ -32,7 +32,8 @@ class NetworkMovieDetailsMapper @Inject constructor(
             runtime = formatRuntimeUseCase(networkModel.runtime),
             status = networkModel.status,
             tagline = networkModel.tagline,
-            title = networkModel.title
+            title = networkModel.title,
+            spokenLanguages = networkModel.spokenLanguages.map { it.englishName }
         )
     }
 }
