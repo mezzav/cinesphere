@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Icon
-import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.Tab
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -24,8 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -59,7 +67,7 @@ object MovieDetailsDestination: NavigationDestination {
     )
 }
 
-val tabs: List<String> = listOf("Details", "Cast", "Trailers")
+val tabs: List<String> = listOf("Details", "Cast")
 
 @Composable
 fun MovieDetailsScreenContainer(uiState: MovieDetailsUiState) {
@@ -126,8 +134,15 @@ fun Screen(
                         .padding(start = 8.dp, end = 8.dp, top = 8.dp)
                 )
             }
+            1 -> {
+                CastList(
+                    cast = cast,
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(CircleShape)
+                )
+            }
         }
-
     }
 }
 
@@ -275,4 +290,55 @@ fun IconText(iconID: Int, text: String) {
 
         Text(text, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
+}
+
+@Composable
+fun CastList(cast: List<Cast>, modifier: Modifier = Modifier) {
+    LazyColumn {
+       items(cast) {castMember ->
+           CastItem(
+               profilePhotoUrl = castMember.profileUrl,
+               name = castMember.name,
+               character = castMember.character,
+               modifier = modifier
+           )
+           
+           HorizontalDivider()
+       }
+    }
+}
+
+@Composable
+fun CastItem(
+    profilePhotoUrl: String?,
+    name:String,
+    character: String,
+    modifier: Modifier = Modifier
+) {
+    ListItem(
+        headlineContent = {
+            Text(
+                text = name,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        leadingContent = {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(profilePhotoUrl)
+                    .crossfade(true)
+                    .error(R.drawable.person)
+                    .build(),
+                contentScale = ContentScale.Crop,
+                contentDescription = "",
+                modifier = modifier
+            )
+        },
+        supportingContent = {
+            Text(
+                text = character,
+                color = Color.Gray
+            )
+        }
+    )
 }
