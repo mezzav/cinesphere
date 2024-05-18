@@ -29,12 +29,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +44,6 @@ import coil.request.ImageRequest
 import com.example.cinesphere.R
 import com.example.cinesphere.data.model.Cast
 import com.example.cinesphere.data.model.Crew
-import com.example.cinesphere.data.model.Genre
 import com.example.cinesphere.data.model.MovieDetails
 import com.example.cinesphere.ui.navigation.NavigationDestination
 import kotlin.text.Typography.bullet
@@ -63,12 +61,15 @@ object MovieDetailsDestination: NavigationDestination {
 
 val tabs: List<String> = listOf("Details", "Cast", "Trailers")
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieDetailsScreen(uiState: MovieDetailsUiState) {
+fun MovieDetailsScreenContainer(uiState: MovieDetailsUiState) {
     when(uiState) {
         is MovieDetailsUiState.Success -> {
-            MovieDetailsScreen(movie = uiState.movie, cast = uiState.cast , crew = uiState.crew )
+            Screen(
+                movie = uiState.movie,
+                cast = uiState.cast,
+                crew = uiState.crew
+            )
         }
         else -> {
             Text("Error")
@@ -78,15 +79,29 @@ fun MovieDetailsScreen(uiState: MovieDetailsUiState) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieDetailsScreen(movie: MovieDetails, cast: List<Cast>, crew: List<Crew>) {
+fun Screen(
+    movie: MovieDetails,
+    cast: List<Cast>,
+    crew: List<Crew>,
+    modifier: Modifier = Modifier
+) {
     var state by remember { mutableIntStateOf(0) }
 
-    Column {
-        MovieDetailsHeader(
+    val genres = if (movie.genres.size > 1) {
+        movie.genres.slice(0..1).joinToString(separator = " ${bullet.toString()} ") { it.name }
+    }
+    else {
+        movie.genres[0].name
+    }
+
+    Column(
+        modifier = modifier
+    ) {
+        BackdropHeader(
             backdropUrl = movie.backdropUrl,
             title = movie.title,
             tagline = movie.tagline,
-            genres = movie.genres.slice(0..1)
+            genres = genres
         )
 
         PrimaryTabRow(selectedTabIndex = state) {
@@ -106,7 +121,7 @@ fun MovieDetailsScreen(movie: MovieDetails, cast: List<Cast>, crew: List<Crew>) 
                     runtime = movie.runtime,
                     languages = movie.spokenLanguages.joinToString(separator = ","),
                     overview = movie.overview,
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth()
                         .padding(start = 8.dp, end = 8.dp, top = 8.dp)
                 )
@@ -117,18 +132,17 @@ fun MovieDetailsScreen(movie: MovieDetails, cast: List<Cast>, crew: List<Crew>) 
 }
 
 @Composable
-fun MovieDetailsHeader(
+fun BackdropHeader(
     backdropUrl: String?,
     title: String,
     tagline: String?,
-    genres: List<Genre>,
+    genres: String,
     modifier: Modifier = Modifier
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
     ) {
 
         AsyncImage(
@@ -136,14 +150,17 @@ fun MovieDetailsHeader(
                 .data(backdropUrl)
                 .crossfade(true)
                 .build(),
-            contentDescription = "",
+            contentDescription = "$title's backdrop header",
             modifier = Modifier.onGloballyPositioned {
                 size = it.size
             }
         )
 
-        Box(
-            modifier = Modifier
+        BackdropHeaderDetails(
+            title = title,
+            genres = genres,
+            tagline = tagline,
+            modifier = modifier
                 .matchParentSize()
                 .background(
                     Brush.verticalGradient(
@@ -151,63 +168,57 @@ fun MovieDetailsHeader(
                             Color.Transparent,
                             Color.Black
                         ),
-                        startY = size.height.toFloat() / 3,
+                        startY = size.height.toFloat() / 4,
                         endY = size.height.toFloat()
                     ),
                 )
         )
+    }
+}
 
-        val genresText = buildAnnotatedString {
-            withStyle(
-                style = SpanStyle(
-                    fontWeight = FontWeight.Bold,
-                    color = Color.LightGray,
-                )
-            ) {
-                genres.forEachIndexed {index, genre ->
-                    append(genre.name)
-
-                    if (index != genres.size - 1)
-                        append(bullet)
-                }
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomStart)
-                .padding(bottom = 13.dp, start = 8.dp, end = 8.dp)
-        ) {
-            ProvideTextStyle(value = TextStyle(
+@Composable
+fun BackdropHeaderDetails(
+    title: String,
+    genres: String,
+    tagline: String?,
+    modifier: Modifier = Modifier
+) {
+//gradient shadow
+    Box(
+        modifier = modifier
+    ) {
+        ProvideTextStyle(
+            value = TextStyle(
                 color = Color.LightGray,
-                fontWeight = FontWeight.Bold
-            )) {
-                Column {
-                    Text(text = title, fontSize = 22.sp)
+                fontWeight = FontWeight.Bold,
+                fontSize = 11.sp
+            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(bottom = 18.dp, start = 8.dp, end = 8.dp)
+            ) {
+                Text(
+                    text = title,
+                    fontSize = 22.sp,
+                )
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                Spacer(Modifier.height(10.dp))
 
-                    ProvideTextStyle(value = TextStyle(
-                        fontSize = 11.sp
-                    )) {
-                        Row(
-                            horizontalArrangement = Arrangement.Start,
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = genres, modifier = Modifier.width(160.dp))
+
+                    if (tagline != null) {
+                        Text(
+                            text = tagline,
+                            textAlign = TextAlign.End,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(text = genresText, modifier = Modifier)
-
-                            Spacer(Modifier.width(140.dp))
-
-                            if (tagline != null) {
-                                Text(
-                                    text = tagline,
-                                    overflow = TextOverflow.Ellipsis,
-                                    maxLines = 2,
-                                    modifier = Modifier.align(Alignment.CenterVertically)
-                                )
-                            }
-                        }
+                        )
                     }
                 }
             }
@@ -242,7 +253,7 @@ fun OverviewContent(
         modifier = modifier
     ) {
         Text(
-            text = "Overview",
+            text = stringResource(R.string.overview_title),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -257,7 +268,6 @@ fun OverviewContent(
 fun IconText(iconID: Int, text: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically
-
     ) {
         Icon(painter = painterResource(id = iconID), contentDescription = null)
 

@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.cinesphere.di.ViewModelFactoryProvider
 import com.example.cinesphere.ui.movie.details.MovieDetailsDestination
-import com.example.cinesphere.ui.movie.details.MovieDetailsScreen
+import com.example.cinesphere.ui.movie.details.MovieDetailsScreenContainer
 import com.example.cinesphere.ui.movie.details.MovieDetailsViewModel
 import com.example.cinesphere.ui.movie.overview.MovieOverviewDestination
 import com.example.cinesphere.ui.movie.overview.MovieOverviewScreen
@@ -72,7 +72,7 @@ fun CineSphereNavigationGraph(
 
             val uiState = viewModel.uiState
 
-            MovieDetailsScreen(uiState)
+            MovieDetailsScreenContainer(uiState)
         }
 
         composable(route = TVOverviewDestination.route) {
