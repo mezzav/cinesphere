@@ -9,10 +9,10 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import com.example.cinesphere.data.model.Movie
+import com.example.cinesphere.data.remote.models.mappers.NetworkMovieMapper
 import com.example.cinesphere.data.repository.paging.NowPlayingMoviesPagingSource
 import com.example.cinesphere.data.repository.paging.PopularMoviesPagingSource
 import com.example.cinesphere.data.repository.paging.UpcomingMoviesPagingSource
-import com.example.cinesphere.domain.FormatTMDBUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,7 +22,7 @@ class MovieOverviewViewModel @Inject constructor(
     private val upcomingMoviesPagingSource: UpcomingMoviesPagingSource,
     private val popularMoviesPagingSource: PopularMoviesPagingSource,
     private val nowPlayingMoviesPagingSource: NowPlayingMoviesPagingSource,
-    private val formatTMDBUrlUseCase: FormatTMDBUrlUseCase
+    private val mapper: NetworkMovieMapper
 ) : ViewModel() {
         val upcomingMovies: Flow<PagingData<Movie>> = Pager(
             config = PagingConfig(
@@ -34,14 +34,7 @@ class MovieOverviewViewModel @Inject constructor(
             pagingData.filter { networkMovie ->
                 !networkMovie.poster.isNullOrBlank()
             }.map { networkMovie ->
-                Movie(
-                    id = networkMovie.id,
-                    adult = networkMovie.adult,
-                    backdropUrl = networkMovie.backdrop?.let { formatTMDBUrlUseCase(1280, it) },
-                    posterUrl = networkMovie.poster?.let { formatTMDBUrlUseCase(342, it) },
-                    overview = networkMovie.overview,
-                    title = networkMovie.title
-                )
+                mapper.mapFromNetwork(networkMovie)
             }
         }.cachedIn(viewModelScope)
 
@@ -55,14 +48,7 @@ class MovieOverviewViewModel @Inject constructor(
             pagingData.filter{ networkMovie ->
                 !networkMovie.poster.isNullOrBlank()
             }.map { networkMovie ->
-                Movie(
-                    id = networkMovie.id,
-                    adult = networkMovie.adult,
-                    backdropUrl = networkMovie.backdrop?.let { formatTMDBUrlUseCase(1280, it) },
-                    posterUrl = networkMovie.poster?.let { formatTMDBUrlUseCase(342, it) },
-                    overview = networkMovie.overview,
-                    title = networkMovie.title
-                )
+                mapper.mapFromNetwork(networkMovie)
             }
         }.cachedIn(viewModelScope)
 
@@ -76,14 +62,7 @@ class MovieOverviewViewModel @Inject constructor(
         pagingData.filter{ networkMovie ->
             !networkMovie.poster.isNullOrBlank()
         }.map { networkMovie ->
-            Movie(
-                id = networkMovie.id,
-                adult = networkMovie.adult,
-                backdropUrl = networkMovie.backdrop?.let { formatTMDBUrlUseCase(1280, it) },
-                posterUrl = networkMovie.poster?.let { formatTMDBUrlUseCase(342, it) },
-                overview = networkMovie.overview,
-                title = networkMovie.title
-            )
+            mapper.mapFromNetwork(networkMovie)
         }
     }.cachedIn(viewModelScope)
 }
