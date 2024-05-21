@@ -131,7 +131,12 @@ fun Screen(
                 )
             }
             1 -> {
-
+                ProductionMemberList(
+                    productionMembers = cast,
+                    modifier = Modifier.
+                        size(70.dp)
+                        .clip(CircleShape)
+                )
             }
         }
     }
