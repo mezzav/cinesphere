@@ -1,6 +1,6 @@
-package com.example.cinesphere.data.model
+package com.example.model
 
-import com.example.ui.ExternalOverviewModel
+import com.example.model.interfaces.ExternalOverviewModel
 
 data class Movie(
     override val id: Int,

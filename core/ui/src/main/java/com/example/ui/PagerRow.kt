@@ -24,11 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-
-interface ExternalOverviewModel {
-    val id: Int
-    val posterUrl: String?
-}
+import com.example.model.interfaces.ExternalOverviewModel
 
 @Composable
 fun<T : ExternalOverviewModel> PagerItemList(

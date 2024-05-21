@@ -1,4 +1,4 @@
-package com.example.cinesphere.data.model
+package com.example.model
 
 data class MovieDetailsWithCredits(
     val movie: MovieDetails,

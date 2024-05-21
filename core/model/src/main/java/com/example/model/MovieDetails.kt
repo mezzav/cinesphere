@@ -1,4 +1,4 @@
-package com.example.cinesphere.data.model
+package com.example.model
 
 data class MovieDetails(
     val backdropUrl: String?,
@@ -15,9 +15,4 @@ data class MovieDetails(
     val status: String,
     val tagline: String?,
     val title: String,
-)
-
-data class Genre(
-    val id: Int,
-    val name: String
 )
