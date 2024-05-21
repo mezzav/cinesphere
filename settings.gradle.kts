@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CineSphere"
 include(":app")
+include(":core:ui")
