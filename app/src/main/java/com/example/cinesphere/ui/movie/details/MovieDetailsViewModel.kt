@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cinesphere.data.model.Cast
-import com.example.cinesphere.data.model.Crew
-import com.example.cinesphere.data.model.MovieDetails
+import com.example.model.Cast
+import com.example.model.Crew
+import com.example.model.MovieDetails
 import com.example.cinesphere.domain.GetMovieDetailsWithCreditsUseCase
 import com.skydoves.sandwich.ApiResponse
 import dagger.assisted.Assisted

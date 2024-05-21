@@ -63,6 +63,7 @@ android {
 
 dependencies {
 
+    implementation(project(":core:model"))
     val hilt_version = "2.51.1"
     val nav_version = "2.7.7"
     val compose_nav_version = "1.6.6"

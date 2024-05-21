@@ -1,12 +1,12 @@
 package com.example.cinesphere.data.remote.models.mappers
 
-import com.example.cinesphere.data.model.MovieDetails
 import com.example.cinesphere.data.remote.models.NetworkMovieDetails
 import com.example.cinesphere.data.remote.models.asExternalModel
 import com.example.cinesphere.data.utils.NetworkMapper
 import com.example.cinesphere.domain.FormatDateUseCase
 import com.example.cinesphere.domain.FormatRuntimeUseCase
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase
+import com.example.model.MovieDetails
 import javax.inject.Inject
 
 class NetworkMovieDetailsMapper @Inject constructor(

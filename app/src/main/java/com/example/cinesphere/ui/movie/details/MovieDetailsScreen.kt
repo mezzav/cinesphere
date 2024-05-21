@@ -11,13 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Tab
@@ -33,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -50,10 +45,11 @@ import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.cinesphere.R
-import com.example.cinesphere.data.model.Cast
-import com.example.cinesphere.data.model.Crew
-import com.example.cinesphere.data.model.MovieDetails
 import com.example.cinesphere.ui.navigation.NavigationDestination
+import com.example.model.Cast
+import com.example.model.Crew
+import com.example.model.MovieDetails
+import com.example.ui.ProductionMemberList
 import kotlin.text.Typography.bullet
 
 object MovieDetailsDestination: NavigationDestination {
@@ -135,12 +131,7 @@ fun Screen(
                 )
             }
             1 -> {
-                CastList(
-                    cast = cast,
-                    modifier = Modifier
-                        .size(70.dp)
-                        .clip(CircleShape)
-                )
+
             }
         }
     }
@@ -290,55 +281,4 @@ fun IconText(iconID: Int, text: String) {
 
         Text(text, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
-}
-
-@Composable
-fun CastList(cast: List<Cast>, modifier: Modifier = Modifier) {
-    LazyColumn {
-       items(cast) {castMember ->
-           CastItem(
-               profilePhotoUrl = castMember.profileUrl,
-               name = castMember.name,
-               character = castMember.character,
-               modifier = modifier
-           )
-           
-           HorizontalDivider()
-       }
-    }
-}
-
-@Composable
-fun CastItem(
-    profilePhotoUrl: String?,
-    name:String,
-    character: String,
-    modifier: Modifier = Modifier
-) {
-    ListItem(
-        headlineContent = {
-            Text(
-                text = name,
-                fontWeight = FontWeight.Bold
-            )
-        },
-        leadingContent = {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(profilePhotoUrl)
-                    .crossfade(true)
-                    .error(R.drawable.person)
-                    .build(),
-                contentScale = ContentScale.Crop,
-                contentDescription = "",
-                modifier = modifier
-            )
-        },
-        supportingContent = {
-            Text(
-                text = character,
-                color = Color.Gray
-            )
-        }
-    )
 }

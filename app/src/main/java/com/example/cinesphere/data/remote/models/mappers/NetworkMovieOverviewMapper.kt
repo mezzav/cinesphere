@@ -1,6 +1,6 @@
 package com.example.cinesphere.data.remote.models.mappers
 
-import com.example.cinesphere.data.model.Movie
+import com.example.model.Movie
 import com.example.cinesphere.data.remote.models.NetworkMovie
 import com.example.cinesphere.data.utils.NetworkMapper
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase

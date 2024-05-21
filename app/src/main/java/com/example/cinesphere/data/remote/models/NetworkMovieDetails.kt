@@ -1,6 +1,6 @@
 package com.example.cinesphere.data.remote.models
 
-import com.example.cinesphere.data.model.Genre
+import com.example.model.Genre
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -8,7 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
-import com.example.cinesphere.data.model.Movie
+import com.example.model.Movie
 import com.example.cinesphere.data.remote.models.mappers.NetworkMovieMapper
 import com.example.cinesphere.data.repository.paging.NowPlayingMoviesPagingSource
 import com.example.cinesphere.data.repository.paging.PopularMoviesPagingSource

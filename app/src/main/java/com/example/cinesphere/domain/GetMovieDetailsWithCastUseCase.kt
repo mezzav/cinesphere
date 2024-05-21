@@ -1,6 +1,6 @@
 package com.example.cinesphere.domain
 
-import com.example.cinesphere.data.model.MovieDetailsWithCredits
+import com.example.model.MovieDetailsWithCredits
 import com.example.cinesphere.data.remote.models.mappers.NetworkMovieCreditsMapper
 import com.example.cinesphere.data.remote.models.mappers.NetworkMovieDetailsMapper
 import com.example.cinesphere.data.repository.NetworkTMDBRepository

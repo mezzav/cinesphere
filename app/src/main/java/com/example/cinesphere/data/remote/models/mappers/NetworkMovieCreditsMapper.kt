@@ -1,11 +1,11 @@
 package com.example.cinesphere.data.remote.models.mappers
 
-import com.example.cinesphere.data.model.Cast
-import com.example.cinesphere.data.model.Crew
-import com.example.cinesphere.data.model.MovieCredits
 import com.example.cinesphere.data.remote.models.NetworkMovieCredits
 import com.example.cinesphere.data.utils.NetworkMapper
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase
+import com.example.model.Cast
+import com.example.model.Crew
+import com.example.model.MovieCredits
 import javax.inject.Inject
 
 
@@ -22,7 +22,7 @@ class NetworkMovieCreditsMapper @Inject constructor(
                     gender = networkCast.gender,
                     name = networkCast.name,
                     profileUrl = networkCast.profilePath?.let { formatTMDBUrlUseCase(185, it) },
-                    character = networkCast.character
+                    role = networkCast.character
                 )
             },
             crew = networkModel.crew.map { networkCrew ->
@@ -33,7 +33,7 @@ class NetworkMovieCreditsMapper @Inject constructor(
                     name = networkCrew.name,
                     profileUrl = networkCrew.profilePath?.let { formatTMDBUrlUseCase(185, it) },
                     department = networkCrew.department,
-                    job = networkCrew.job
+                    role = networkCrew.job
                 )
             }
         )

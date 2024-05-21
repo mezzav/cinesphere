@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.example.cinesphere.R
-import com.example.cinesphere.data.model.Movie
+import com.example.model.Movie
 import com.example.cinesphere.ui.navigation.NavigationDestination
 import com.example.ui.PagerItemList
 
