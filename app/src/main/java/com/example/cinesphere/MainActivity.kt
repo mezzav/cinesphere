@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cinesphere.ui.movie.overview.MovieOverviewDestination
 import com.example.cinesphere.ui.navigation.CineSphereNavigationGraph
+import com.example.cinesphere.ui.navigation.MovieOverviewDestination
 import com.example.cinesphere.ui.search.SearchDestination
 import com.example.cinesphere.ui.theme.CineSphereTheme
 import com.example.cinesphere.ui.tv.overview.TVOverviewDestination
