@@ -1,6 +1,6 @@
 package com.example.cinesphere.data.remote.models.mappers
 
-import com.example.cinesphere.data.utils.NetworkMapper
+import com.example.utils.NetworkMapper
 import com.example.cinesphere.domain.FormatDateUseCase
 import com.example.cinesphere.domain.FormatRuntimeUseCase
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase

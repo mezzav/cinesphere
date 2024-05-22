@@ -2,7 +2,7 @@ package com.example.cinesphere.data.remote.models.mappers
 
 import com.example.model.Movie
 import com.example.network.model.NetworkMovie
-import com.example.cinesphere.data.utils.NetworkMapper
+import com.example.utils.NetworkMapper
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase
 import javax.inject.Inject
 

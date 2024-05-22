@@ -79,6 +79,7 @@ dependencies {
 
     //dagger-hilt
     implementation(libs.hilt.android)
+    implementation(project(":core:utils"))
     kapt(libs.hilt.android.compiler)
 
     //viewmodel
