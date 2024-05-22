@@ -1,6 +1,5 @@
-package com.example.cinesphere.data.remote.models
+package com.example.network.model
 
-import com.example.model.Genre
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -110,9 +109,4 @@ data class NetworkCollection(
 data class NetworkGenres(
     val id: Int,
     val name: String
-)
-
-fun NetworkGenres.asExternalModel() = Genre(
-    id = id,
-    name = name
 )

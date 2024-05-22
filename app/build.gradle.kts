@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
@@ -24,11 +22,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-
-        buildConfigField("String", "TMDB_API_TOKEN", "\"${properties.getProperty("TMDB_API_TOKEN")}\"")
     }
 
     buildTypes {
@@ -49,7 +42,6 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.9"
@@ -64,12 +56,7 @@ android {
 dependencies {
 
     implementation(project(":core:model"))
-    val hilt_version = "2.51.1"
-    val nav_version = "2.7.7"
-    val compose_nav_version = "1.6.6"
-    val paging_version = "3.2.1"
-    val sandwich_version = "2.0.7"
-
+    implementation(project(":core:network"))
     implementation(project(":core:ui"))
 
     implementation(libs.androidx.core.ktx)
@@ -82,35 +69,29 @@ dependencies {
     implementation(libs.androidx.material3)
 
     //compose-navigation
-    implementation("androidx.compose.material:material:${compose_nav_version}")
+    implementation(libs.androidx.material)
 
     //navigation
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
 
-    //retrofit
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation(libs.coil.compose)
 
     //dagger-hilt
-    implementation("com.google.dagger:hilt-android:${hilt_version}")
-    kapt("com.google.dagger:hilt-android-compiler:${hilt_version}")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     //viewmodel
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
-    //serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //paging
-    implementation("androidx.paging:paging-runtime:${paging_version}")
+    implementation(libs.androidx.paging.runtime)
     // optional - Jetpack Compose integration
-    implementation("androidx.paging:paging-compose:3.3.0-beta01")
+    implementation(libs.paging.compose)
 
     //sandwich
-    implementation("com.github.skydoves:sandwich:${sandwich_version}")
-    implementation("com.github.skydoves:sandwich-retrofit:${sandwich_version}")
+    implementation(libs.skydoves.sandwich)
+    implementation(libs.skydoves.sandwich.retrofit)
 
     testImplementation(libs.junit)
 

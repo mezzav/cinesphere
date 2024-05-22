@@ -1,12 +1,12 @@
 package com.example.cinesphere.data.remote.models.mappers
 
-import com.example.cinesphere.data.remote.models.NetworkMovieDetails
-import com.example.cinesphere.data.remote.models.asExternalModel
 import com.example.cinesphere.data.utils.NetworkMapper
 import com.example.cinesphere.domain.FormatDateUseCase
 import com.example.cinesphere.domain.FormatRuntimeUseCase
 import com.example.cinesphere.domain.FormatTMDBUrlUseCase
+import com.example.model.Genre
 import com.example.model.MovieDetails
+import com.example.network.model.NetworkMovieDetails
 import javax.inject.Inject
 
 class NetworkMovieDetailsMapper @Inject constructor(
@@ -19,7 +19,12 @@ class NetworkMovieDetailsMapper @Inject constructor(
             backdropUrl = networkModel.backdropPath?.let { formatTMDBUrlUseCase(1280, it) },
             posterUrl = networkModel.posterPath?.let { formatTMDBUrlUseCase(342, it) },
             budget = networkModel.budget,
-            genres = networkModel.genres.map{ it.asExternalModel() },
+            genres = networkModel.genres.map{ genre ->
+                Genre(
+                    id = genre.id,
+                    name = genre.name
+                )
+            },
             homepage = networkModel.homepage,
             imdbID = networkModel.imdbID,
             overview = networkModel.overview,

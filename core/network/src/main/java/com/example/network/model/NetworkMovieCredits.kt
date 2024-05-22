@@ -1,4 +1,4 @@
-package com.example.cinesphere.data.remote.models
+package com.example.network.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

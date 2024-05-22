@@ -3,8 +3,8 @@ package com.example.cinesphere.data.repository.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.cinesphere.data.remote.models.NetworkMovie
-import com.example.cinesphere.data.remote.service.TMDBService
+import com.example.network.model.NetworkMovie
+import com.example.network.TMDBService
 import com.example.cinesphere.data.repository.paging.PopularMoviesPagingSource.PagingConstants.TAG
 import javax.inject.Inject
 import kotlin.math.max

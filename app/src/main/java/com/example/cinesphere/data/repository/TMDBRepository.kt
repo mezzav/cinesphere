@@ -1,8 +1,8 @@
 package com.example.cinesphere.data.repository
 
-import com.example.cinesphere.data.remote.models.NetworkMovieCredits
-import com.example.cinesphere.data.remote.models.NetworkMovieDetails
-import com.example.cinesphere.data.remote.service.TMDBService
+import com.example.network.model.NetworkMovieCredits
+import com.example.network.model.NetworkMovieDetails
+import com.example.network.TMDBService
 import com.example.cinesphere.di.IoDispatcher
 import com.skydoves.sandwich.ApiResponse
 import kotlinx.coroutines.CoroutineDispatcher

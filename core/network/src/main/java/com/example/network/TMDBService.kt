@@ -1,12 +1,13 @@
-package com.example.cinesphere.data.remote.service
+package com.example.network
 
-import com.example.cinesphere.data.remote.models.NetworkMovieCredits
-import com.example.cinesphere.data.remote.models.NetworkMovieDetails
-import com.example.cinesphere.data.remote.models.NetworkMovieList
+import com.example.network.model.NetworkMovieCredits
+import com.example.network.model.NetworkMovieDetails
+import com.example.network.model.NetworkMovieList
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+
 
 interface TMDBService {
     @GET("movie/upcoming")
