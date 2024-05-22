@@ -2,7 +2,7 @@ package com.example.cinesphere.data.remote.models.mappers
 
 import com.example.network.model.NetworkMovieCredits
 import com.example.utils.NetworkMapper
-import com.example.cinesphere.domain.FormatTMDBUrlUseCase
+import com.example.domain.FormatTMDBUrlUseCase
 import com.example.model.Cast
 import com.example.model.Crew
 import com.example.model.MovieCredits

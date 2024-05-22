@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:network"))
     implementation(project(":core:ui"))
+    implementation(project(":core:utils"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -79,7 +80,7 @@ dependencies {
 
     //dagger-hilt
     implementation(libs.hilt.android)
-    implementation(project(":core:utils"))
+    implementation(project(":core:domain"))
     kapt(libs.hilt.android.compiler)
 
     //viewmodel

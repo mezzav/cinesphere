@@ -1,4 +1,4 @@
-package com.example.cinesphere.domain
+package com.example.domain
 
 import javax.inject.Inject
 
