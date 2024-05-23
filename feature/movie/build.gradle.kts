@@ -65,8 +65,13 @@ dependencies {
     implementation(libs.coil.compose)
 
     //dagger-hilt
-    implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.navigation.common.ktx)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    //compose navigation
+    implementation(libs.androidx.navigation.compose)
 
     //sandwich
     implementation(libs.skydoves.sandwich)

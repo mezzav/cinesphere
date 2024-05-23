@@ -18,10 +18,10 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cinesphere.ui.navigation.CineSphereNavigationGraph
-import com.example.cinesphere.ui.navigation.MovieOverviewDestination
 import com.example.cinesphere.ui.search.SearchDestination
 import com.example.cinesphere.ui.theme.CineSphereTheme
 import com.example.cinesphere.ui.tv.overview.TVOverviewDestination
+import com.example.movie.navigation.MovieOverviewDestination
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,12 +61,10 @@ fun CineSphereBottomAppBar() {
                           navController.navigate(screen.route)
                         },
                         icon = {
-                            screen.drawable?.let {
-                                Icon(
-                                    painterResource(id = it),
-                                    contentDescription = stringResource(id = screen.titleRes)
-                                )
-                            }
+                            Icon(
+                                painterResource(id = screen.drawable),
+                                contentDescription = stringResource(id = screen.titleRes)
+                            )
                         },
                         label = {
                             Text(

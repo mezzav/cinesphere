@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="overview_title">Overview</string>
+    <string name="movie_details_title">Movie Details</string>
+    <string name="movie_overview_title">Movie Overview</string>
 </resources>
