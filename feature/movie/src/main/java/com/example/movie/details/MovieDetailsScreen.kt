@@ -47,7 +47,10 @@ import com.example.model.Cast
 import com.example.model.Crew
 import com.example.model.MovieDetails
 import com.example.movie.R
+import com.example.ui.Header
+import com.example.ui.IconText
 import com.example.ui.ProductionMemberList
+import com.example.ui.TitleCard
 import kotlin.text.Typography.bullet
 
 
@@ -79,22 +82,23 @@ fun Screen(
 ) {
     var state by remember { mutableIntStateOf(0) }
 
-    val genres = if (movie.genres.size > 1) {
-        movie.genres.slice(0..1).joinToString(separator = " ${bullet.toString()} ") { it.name }
-    }
-    else {
-        movie.genres[0].name
-    }
-
     Column(
         modifier = modifier
     ) {
-        BackdropHeader(
-            backdropUrl = movie.backdropUrl,
-            title = movie.title,
-            tagline = movie.tagline,
-            genres = genres
-        )
+        Box {
+            Header(
+                backdropUrl = movie.backdropUrl
+            )
+
+            TitleCard(
+                title = movie.title,
+                genres = movie.genres.take(2).map { it.name },
+                tagline = movie.tagline,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(start = 8.dp, bottom = 20.dp, end = 8.dp)
+            )
+        }
 
         PrimaryTabRow(selectedTabIndex = state) {
             tabs.forEachIndexed { index, tab ->
@@ -125,101 +129,6 @@ fun Screen(
                         size(70.dp)
                         .clip(CircleShape)
                 )
-            }
-        }
-    }
-}
-
-@Composable
-fun BackdropHeader(
-    backdropUrl: String?,
-    title: String,
-    tagline: String?,
-    genres: String,
-    modifier: Modifier = Modifier
-) {
-    var size by remember { mutableStateOf(IntSize.Zero) }
-
-    Box(
-        modifier = modifier
-    ) {
-
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(backdropUrl)
-                .crossfade(true)
-                .build(),
-            contentDescription = "$title's backdrop header",
-            modifier = Modifier.onGloballyPositioned {
-                size = it.size
-            }
-        )
-
-        BackdropHeaderDetails(
-            title = title,
-            genres = genres,
-            tagline = tagline,
-            modifier = modifier
-                .matchParentSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color.Black
-                        ),
-                        startY = size.height.toFloat() / 4,
-                        endY = size.height.toFloat()
-                    ),
-                )
-        )
-    }
-}
-
-@Composable
-fun BackdropHeaderDetails(
-    title: String,
-    genres: String,
-    tagline: String?,
-    modifier: Modifier = Modifier
-) {
-//gradient shadow
-    Box(
-        modifier = modifier
-    ) {
-        ProvideTextStyle(
-            value = TextStyle(
-                color = Color.LightGray,
-                fontWeight = FontWeight.Bold,
-                fontSize = 11.sp
-            )
-        ) {
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(bottom = 18.dp, start = 8.dp, end = 8.dp)
-            ) {
-                Text(
-                    text = title,
-                    fontSize = 22.sp,
-                )
-
-                Spacer(Modifier.height(10.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = genres, modifier = Modifier.width(160.dp))
-
-                    if (tagline != null) {
-                        Text(
-                            text = tagline,
-                            textAlign = TextAlign.End,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
             }
         }
     }
