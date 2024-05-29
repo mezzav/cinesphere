@@ -1,6 +1,5 @@
 package com.example.movie.details
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,36 +12,22 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraphBuilder
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.model.Cast
 import com.example.model.Crew
 import com.example.model.MovieDetails
@@ -51,7 +36,6 @@ import com.example.ui.Header
 import com.example.ui.IconText
 import com.example.ui.ProductionMemberList
 import com.example.ui.TitleCard
-import kotlin.text.Typography.bullet
 
 
 val tabs: List<String> = listOf("Details", "Cast")
@@ -125,8 +109,8 @@ fun Screen(
             1 -> {
                 ProductionMemberList(
                     productionMembers = cast,
-                    modifier = Modifier.
-                        size(70.dp)
+                    modifier = Modifier
+                        .size(70.dp)
                         .clip(CircleShape)
                 )
             }
@@ -149,9 +133,18 @@ fun OverviewContent(
         Column(
             modifier = Modifier.width(160.dp)
         ) {
-            IconText(R.drawable.calendar, releaseDate)
-            IconText(R.drawable.time, runtime)
-            IconText(R.drawable.language, languages)
+            IconText(
+                painter = painterResource(R.drawable.calendar),
+                text = releaseDate
+            )
+            IconText(
+                painter = painterResource(id = R.drawable.time),
+                text = runtime
+            )
+            IconText(
+                painter = painterResource(R.drawable.language),
+                text = languages
+            )
         }
     }
 
@@ -169,18 +162,5 @@ fun OverviewContent(
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(overview)
-    }
-}
-
-@Composable
-fun IconText(iconID: Int, text: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(painter = painterResource(id = iconID), contentDescription = null)
-
-        Spacer(Modifier.width(4.dp))
-
-        Text(text, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
 }
