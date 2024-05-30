@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/core/utils" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/movie" />
+            <option value="$PROJECT_DIR$/feature/tv" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

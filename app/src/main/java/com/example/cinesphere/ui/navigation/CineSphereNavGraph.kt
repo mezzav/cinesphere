@@ -7,12 +7,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cinesphere.ui.search.SearchDestination
 import com.example.cinesphere.ui.search.SearchScreen
-import com.example.cinesphere.ui.tv.overview.TVOverviewDestination
-import com.example.cinesphere.ui.tv.overview.TVOverviewScreen
 import com.example.movie.navigation.MovieOverviewDestination
 import com.example.movie.navigation.movieDetailsScreen
 import com.example.movie.navigation.movieOverviewScreen
 import com.example.movie.navigation.navigateToMovieDetails
+import com.example.tv.navigation.tvOverviewScreen
 
 @Composable
 fun CineSphereNavigationGraph(
@@ -32,9 +31,7 @@ fun CineSphereNavigationGraph(
 
         movieDetailsScreen()
 
-        composable(route = TVOverviewDestination.route) {
-            TVOverviewScreen()
-        }
+        tvOverviewScreen()
 
         composable(route = SearchDestination.route) {
             SearchScreen()

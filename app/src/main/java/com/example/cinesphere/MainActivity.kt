@@ -20,8 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cinesphere.ui.navigation.CineSphereNavigationGraph
 import com.example.cinesphere.ui.search.SearchDestination
 import com.example.cinesphere.ui.theme.CineSphereTheme
-import com.example.cinesphere.ui.tv.overview.TVOverviewDestination
 import com.example.movie.navigation.MovieOverviewDestination
+import com.example.tv.navigation.TVOverviewDestination
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

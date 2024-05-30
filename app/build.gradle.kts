@@ -55,6 +55,7 @@ android {
 
 dependencies {
     implementation(project(":feature:movie"))
+    implementation(project(":feature:tv"))
     implementation(project(":core:utils"))
 
     implementation(libs.androidx.core.ktx)
