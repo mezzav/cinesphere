@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -36,8 +37,7 @@ import coil.request.ImageRequest
 fun Header(
     backdropUrl: String?,
     modifier: Modifier = Modifier,
-    errorImage: Int = R.drawable.star_wars,
-    previewPlaceholder: Int = R.drawable.star_wars,
+    previewPlaceholder: Painter? = null,
     contentDescription: String? = null,
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
@@ -48,10 +48,9 @@ fun Header(
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(backdropUrl)
-                .error(errorImage)
                 .crossfade(true)
                 .build(),
-            placeholder =  painterResource(id = previewPlaceholder),
+            placeholder = previewPlaceholder,
             contentDescription = contentDescription,
             modifier = Modifier.onGloballyPositioned {
                 size = it.size
@@ -131,7 +130,8 @@ fun TitleCard(
 fun BackdropPreview() {
     Box {
         Header(
-            backdropUrl = "https://example.com/image.jpg"
+            backdropUrl = "https://example.com/image.jpg",
+            previewPlaceholder = painterResource(id = R.drawable.star_wars_backdrop)
         )
 
         TitleCard(
