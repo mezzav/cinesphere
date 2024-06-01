@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,8 +34,10 @@ import com.example.model.Cast
 import com.example.model.Crew
 import com.example.model.MovieDetails
 import com.example.movie.R
+import com.example.ui.ErrorIndicator
 import com.example.ui.Header
 import com.example.ui.IconText
+import com.example.ui.LoadingIndicator
 import com.example.ui.ProductionMemberList
 import com.example.ui.TitleCard
 
@@ -50,8 +54,14 @@ fun MovieDetailsScreenContainer(uiState: MovieDetailsUiState) {
                 crew = uiState.crew
             )
         }
+        is MovieDetailsUiState.Loading -> {
+            LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
         else -> {
-            Text("Error")
+            ErrorIndicator(
+                text = "An error occurred displaying the information.",
+                boxModifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
