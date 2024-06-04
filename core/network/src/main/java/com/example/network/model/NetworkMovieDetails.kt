@@ -38,10 +38,10 @@ data class NetworkMovieDetails(
     val posterPath: String?,
 
     @SerialName("production_companies")
-    val productionCompanies: List<NetworkProductionCompanies>,
+    val productionCompanies: List<NetworkProductionCompany>,
 
     @SerialName("production_countries")
-    val productionCountries: List<NetworkProductionCountries>,
+    val productionCountries: List<NetworkProductionCountry>,
 
     @SerialName("release_date")
     val releaseDate: String,
@@ -49,7 +49,7 @@ data class NetworkMovieDetails(
     val runtime: Int,
 
     @SerialName("spoken_languages")
-    val spokenLanguages: List<NetworkSpokenLanguages>,
+    val spokenLanguages: List<NetworkSpokenLanguage>,
 
     val status: String,
     val tagline: String?,
@@ -64,36 +64,6 @@ data class NetworkMovieDetails(
 )
 
 @Serializable
-data class NetworkSpokenLanguages(
-    @SerialName("english_name")
-    val englishName: String,
-
-    @SerialName("iso_639_1")
-    val shorthand: String,
-    val name: String
-)
-
-@Serializable
-data class NetworkProductionCompanies(
-    val id: Int,
-
-    @SerialName("logo_path")
-    val logoPath: String?,
-
-    val name: String,
-
-    @SerialName("origin_country")
-    val originCountry: String
-)
-
-@Serializable
-data class NetworkProductionCountries(
-    @SerialName("iso_3166_1")
-    val shorthand: String,
-    val name: String
-)
-
-@Serializable
 data class NetworkCollection(
     val id: Int,
     val name: String?,
@@ -103,10 +73,4 @@ data class NetworkCollection(
 
     @SerialName("backdrop_path")
     val backdrop: String?
-)
-
-@Serializable
-data class NetworkGenres(
-    val id: Int,
-    val name: String
 )

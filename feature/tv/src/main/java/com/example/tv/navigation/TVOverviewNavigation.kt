@@ -17,6 +17,7 @@ object TVOverviewDestination: NavigationHomeDestination {
 }
 
 fun NavGraphBuilder.tvOverviewScreen(
+    onNavigateToTVShowDetails: (Int) -> Unit
 ) {
     composable(route = TVOverviewDestination.route) {
         val viewModel = hiltViewModel<TVOverviewViewModel>()
@@ -29,7 +30,7 @@ fun NavGraphBuilder.tvOverviewScreen(
             onTheAirPagingList = onTheAirPagingList,
             topRatedPagingList = topRatedPagingList,
             popularPagingList = popularPagingList,
-            navigateToDetails = {  }
+            navigateToDetails = onNavigateToTVShowDetails
         )
     }
 }

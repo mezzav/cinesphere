@@ -4,6 +4,7 @@ import com.example.network.model.NetworkMovieCredits
 import com.example.network.model.NetworkMovieDetails
 import com.example.network.model.NetworkMovieList
 import com.example.network.model.NetworkTVList
+import com.example.network.model.NetworkTVShowDetails
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -50,4 +51,9 @@ interface TMDBService {
     suspend fun topRatedTVShows(
         @Query("page") page: Int
     ): NetworkTVList
+
+    @GET("tv/{id}")
+    suspend fun tvDetails(
+        @Path("id") id: Int
+    ): ApiResponse<NetworkTVShowDetails>
 }
