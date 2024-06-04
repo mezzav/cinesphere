@@ -1,4 +1,4 @@
-package com.example.tv.overview
+package com.example.tv.ui.overview
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height

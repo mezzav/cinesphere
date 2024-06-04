@@ -1,4 +1,4 @@
-package com.example.tv.overview
+package com.example.tv.ui.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

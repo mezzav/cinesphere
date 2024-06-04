@@ -6,8 +6,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.tv.R
-import com.example.tv.overview.TVOverviewScreen
-import com.example.tv.overview.TVOverviewViewModel
+import com.example.tv.ui.overview.TVOverviewScreen
+import com.example.tv.ui.overview.TVOverviewViewModel
 import com.example.utils.NavigationHomeDestination
 
 object TVOverviewDestination: NavigationHomeDestination {
