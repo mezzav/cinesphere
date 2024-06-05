@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ui"
+    namespace = "com.example.assets"
     compileSdk = 34
 
     defaultConfig {
@@ -23,41 +23,20 @@ android {
             )
         }
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
-    }
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation(project(":core:model"))
-    implementation(project(":core:assets"))
 
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.material3)
-    implementation(libs.ui)
-    implementation(libs.ui.tooling.preview)
-    debugImplementation(libs.ui.tooling)
-
-
-    //coil
-    implementation(libs.coil.compose)
-
-    //paging
-    implementation(libs.androidx.paging.compose)
-
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
