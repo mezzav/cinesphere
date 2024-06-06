@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:utils"))
     implementation(project(":core:ui"))
+    implementation(project(":core:assets"))
 
     //paging and paging-compose
     implementation(libs.androidx.paging.runtime)
